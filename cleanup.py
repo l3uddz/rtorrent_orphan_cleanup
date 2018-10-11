@@ -55,12 +55,13 @@ def remove_file(file_path):
         # delete the file
         if path.delete(file_path):
             # the file/folder was removed
-            left_over_files = path.find_files(os.path.dirname(file_path))
+            folder_path = os.path.dirname(file_path)
+            left_over_files = path.find_files(folder_path)
             if not len(left_over_files):
-                log.warning("Do you want to remove the orphaned folder: %s (y/n)", os.path.dirname(file_path))
+                log.warning("Do you want to remove the orphaned folder: %s (y/n)", folder_path)
                 yn = input()
                 if yn.lower() == 'y':
-                    path.delete(os.path.dirname(os.path.dirname(file_path)))
+                    path.delete(folder_path)
 
 
 ############################################################
