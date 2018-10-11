@@ -95,6 +95,8 @@ def delete(path):
                         os.remove(item)
                     else:
                         os.rmdir(item)
+
+                    return True
                 except Exception:
                     log.exception("Exception deleting '%s': ", item)
             else:
@@ -107,10 +109,13 @@ def delete(path):
                     os.remove(path)
                 else:
                     os.rmdir(path)
+
+                return True
             except Exception:
                 log.exception("Exception deleting '%s': ", path)
         else:
             log.debug("Skipping deletion of '%s' as it does not exist", path)
+    return False
 
 
 def remove_empty_dirs(path, depth):

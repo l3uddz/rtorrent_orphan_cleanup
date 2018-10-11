@@ -43,9 +43,24 @@ log = rootLogger.getChild("rtorrent_orphan_cleanup")
 # Rtorrent
 rtorrent = None
 
+
 ############################################################
 # FUNCTIONS
 ############################################################
+
+def remove_file(file_path):
+    log.warning("Do you want to remove: %s (y/n)", file_path)
+    yn = input()
+    if yn.lower() == 'y':
+        # delete the file
+        if path.delete(file_path):
+            # the file/folder was removed
+            left_over_files = path.find_files(os.path.dirname(file_path))
+            if not len(left_over_files):
+                log.warning("Do you want to remove the orphaned folder: %s (y/n)", os.path.dirname(file_path))
+                yn = input()
+                if yn.lower() == 'y':
+                    path.delete(os.path.dirname(os.path.dirname(file_path)))
 
 
 ############################################################
@@ -88,4 +103,14 @@ if __name__ == "__main__":
         sys.exit(0)
     log.info("Found %d orphaned files that existed locally, but were not associated with a torrent!",
              len(orphaned_files))
+
     log.info(orphaned_files)
+
+    # delete files
+    log.info("Do you want to delete the files, one by one? (y/n)")
+    yn = input()
+    if yn.lower() == 'y':
+        for orphaned_file in orphaned_files:
+            remove_file(orphaned_file)
+
+    log.info("Finished!")
