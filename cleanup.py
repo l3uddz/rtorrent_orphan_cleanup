@@ -60,7 +60,7 @@ if __name__ == "__main__":
     if not len(local_files):
         log.error("Failed to build files list for: %s", cfg.config['rutorrent']['download_folder'])
         sys.exit(1)
-    log.info("Built file list with %d files from: %s", cfg.config['rutorrent']['download_folder'])
+    log.info("Built file list with %d files from: %s", len(local_files), cfg.config['rutorrent']['download_folder'])
 
     # fetch torrent list
     rtorrent = Rtorrent(cfg.config['rutorrent']['url'])
@@ -86,5 +86,6 @@ if __name__ == "__main__":
     if not len(orphaned_files):
         log.info("There were no orphaned files found!")
         sys.exit(0)
-    log.info("Found %d orphaned files that existed locally, but were not associated with a torrent!")
+    log.info("Found %d orphaned files that existed locally, but were not associated with a torrent!",
+             len(orphaned_files))
     log.info(orphaned_files)
