@@ -95,7 +95,7 @@ if __name__ == "__main__":
         if len(remapped_files):
             torrent_files.extend(remapped_files)
             log.debug("Added %5s files from torrent: %s", len(remapped_files), v['name'])
-    log.info("Built file list with %d total files from %d torrents", len(torrent_files), len(torrents))
+    log.info("Built file list with %d files from %d torrents", len(torrent_files), len(torrents))
 
     # build list of files that are no longer in the torrent client
     orphaned_files = set(local_files) - set(torrent_files)
