@@ -88,7 +88,7 @@ class Config:
         if not os.path.exists(self.config_path):
             with open(self.config_path, 'w') as fp:
                 json.dump(self.default_config, fp, indent=2, sort_keys=False)
-            self.log.warning(f"Default configuration was dumped to: {self.config_path}")
+            self.log.warning("Default configuration was dumped to: %s", self.config_path)
             self.log.warning("Please adjust before running again!")
             sys.exit(0)
         else:
