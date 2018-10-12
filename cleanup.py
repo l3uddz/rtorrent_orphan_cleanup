@@ -43,9 +43,25 @@ log = rootLogger.getChild("rtorrent_orphan_cleanup")
 # Rtorrent
 rtorrent = None
 
+
 ############################################################
 # FUNCTIONS
 ############################################################
+
+def remove_file(file_path):
+    log.warning("Do you want to remove: %s (y/n)", file_path)
+    yn = input()
+    if yn.lower() == 'y':
+        # delete the file
+        if path.delete(file_path):
+            # the file/folder was removed
+            folder_path = os.path.dirname(file_path)
+            left_over_files = path.find_files(folder_path)
+            if not len(left_over_files):
+                log.warning("Do you want to remove the orphaned folder: %s (y/n)", folder_path)
+                yn = input()
+                if yn.lower() == 'y':
+                    path.delete(folder_path)
 
 
 ############################################################
@@ -60,7 +76,7 @@ if __name__ == "__main__":
     if not len(local_files):
         log.error("Failed to build files list for: %s", cfg.config['rutorrent']['download_folder'])
         sys.exit(1)
-    log.info("Built file list with %d files from: %s", cfg.config['rutorrent']['download_folder'])
+    log.info("Built file list with %d files from: %s", len(local_files), cfg.config['rutorrent']['download_folder'])
 
     # fetch torrent list
     rtorrent = Rtorrent(cfg.config['rutorrent']['url'])
@@ -86,5 +102,16 @@ if __name__ == "__main__":
     if not len(orphaned_files):
         log.info("There were no orphaned files found!")
         sys.exit(0)
-    log.info("Found %d orphaned files that existed locally, but were not associated with a torrent!")
+    log.info("Found %d orphaned files that existed locally, but were not associated with a torrent!",
+             len(orphaned_files))
+
     log.info(orphaned_files)
+
+    # delete files
+    log.info("Do you want to delete the files, one by one? (y/n)")
+    yn = input()
+    if yn.lower() == 'y':
+        for orphaned_file in orphaned_files:
+            remove_file(orphaned_file)
+
+    log.info("Finished!")
