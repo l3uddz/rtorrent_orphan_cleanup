@@ -48,20 +48,29 @@ rtorrent = None
 # FUNCTIONS
 ############################################################
 
-def remove_file(file_path):
+def remove_path(file_path):
     log.warning("Do you want to remove: %s (y/n)", file_path)
     yn = input()
     if yn.lower() == 'y':
-        # delete the file
+        # delete the path
+        is_folder = os.path.isdir(file_path)
         if path.delete(file_path):
             # the file/folder was removed
-            folder_path = os.path.dirname(file_path)
-            left_over_files = path.find_files(folder_path)
-            if not len(left_over_files):
-                log.warning("Do you want to remove the orphaned folder: %s (y/n)", folder_path)
-                yn = input()
-                if yn.lower() == 'y':
-                    path.delete(folder_path)
+            if not is_folder:
+                folder_path = os.path.dirname(file_path)
+                left_over_files = path.find_files(folder_path)
+                if not len(left_over_files):
+                    log.warning("Do you want to remove the orphaned folder: %s (y/n)", folder_path)
+                    yn = input()
+                    if yn.lower() == 'y':
+                        path.delete(folder_path)
+
+
+def existing_folder(folder_path, torrent_files):
+    for file_path in torrent_files:
+        if file_path.lower().startswith(folder_path.lower()):
+            return True
+    return False
 
 
 ############################################################
@@ -77,6 +86,14 @@ if __name__ == "__main__":
         log.error("Failed to build files list for: %s", cfg.config['rutorrent']['download_folder'])
         sys.exit(1)
     log.info("Built file list with %d files from: %s", len(local_files), cfg.config['rutorrent']['download_folder'])
+
+    # build list of folders in download path
+    local_folders = path.find_folders(cfg.config['rutorrent']['download_folder'])
+    if not len(local_folders):
+        log.error("Failed to build folders list for: %s", cfg.config['rutorrent']['download_folder'])
+        sys.exit(1)
+    log.info("Built folder list with %d folders from: %s", len(local_folders),
+             cfg.config['rutorrent']['download_folder'])
 
     # fetch torrent list
     rtorrent = Rtorrent(cfg.config['rutorrent']['url'])
@@ -99,6 +116,12 @@ if __name__ == "__main__":
 
     # build list of files that are no longer in the torrent client
     orphaned_files = set(local_files) - set(torrent_files)
+
+    # add list of folders to orphaned_files
+    for folder in local_folders:
+        if not existing_folder(folder, torrent_files):
+            orphaned_files.add(folder)
+
     if not len(orphaned_files):
         log.info("There were no orphaned files found!")
         sys.exit(0)
@@ -112,6 +135,6 @@ if __name__ == "__main__":
     yn = input()
     if yn.lower() == 'y':
         for orphaned_file in orphaned_files:
-            remove_file(orphaned_file)
+            remove_path(orphaned_file)
 
     log.info("Finished!")
