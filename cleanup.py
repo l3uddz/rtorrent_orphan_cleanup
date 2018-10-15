@@ -115,26 +115,26 @@ if __name__ == "__main__":
     log.info("Built file list with %d files from %d torrents", len(torrent_files), len(torrents))
 
     # build list of files that are no longer in the torrent client
-    orphaned_files = set(local_files) - set(torrent_files)
+    orphaned_paths = set(local_files) - set(torrent_files)
 
     # add list of folders to orphaned_files
     for folder in local_folders:
         if not existing_folder(folder, torrent_files):
-            orphaned_files.add(folder)
+            orphaned_paths.add(folder)
 
-    if not len(orphaned_files):
+    if not len(orphaned_paths):
         log.info("There were no orphaned files found!")
         sys.exit(0)
-    log.info("Found %d orphaned files that existed locally, but were not associated with a torrent!",
-             len(orphaned_files))
+    log.info("Found %d orphaned paths that existed locally, but were not associated with a torrent!",
+             len(orphaned_paths))
 
-    log.info(orphaned_files)
+    log.info(orphaned_paths)
 
     # delete files
-    log.info("Do you want to delete the files, one by one? (y/n)")
+    log.info("Do you want to delete the paths, one by one? (y/n)")
     yn = input()
     if yn.lower() == 'y':
-        for orphaned_file in orphaned_files:
+        for orphaned_file in orphaned_paths:
             remove_path(orphaned_file)
 
     log.info("Finished!")
