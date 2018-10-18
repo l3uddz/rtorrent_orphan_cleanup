@@ -128,13 +128,14 @@ if __name__ == "__main__":
     log.info("Found %d orphaned paths that existed locally, but were not associated with a torrent!",
              len(orphaned_paths))
 
-    log.info(orphaned_paths)
+    sorted_orphaned_paths = path.sort_path_list(orphaned_paths)
+    log.info(sorted_orphaned_paths)
 
-    # delete files
+    # delete paths
     log.info("Do you want to delete the paths, one by one? (y/n)")
     yn = input()
     if yn.lower() == 'y':
-        for orphaned_file in orphaned_paths:
-            remove_path(orphaned_file)
+        for orphaned_path in sorted_orphaned_paths:
+            remove_path(orphaned_path)
 
     log.info("Finished!")
