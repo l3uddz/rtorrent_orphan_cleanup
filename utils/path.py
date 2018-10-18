@@ -32,6 +32,10 @@ def get_file_hash(file):
     return hashlib.md5(key.encode('utf-8')).hexdigest()
 
 
+def sort_path_list(file_list, sep=os.path.sep, high_to_low=True):
+    return sorted(file_list, key=lambda x: x.count(sep), reverse=high_to_low)
+
+
 def find_files(folder, extension=None, depth=None):
     file_list = []
     start_count = folder.count(os.sep)
@@ -48,7 +52,7 @@ def find_files(folder, extension=None, depth=None):
                 if file.lower().endswith(extension.lower()):
                     file_list.append(file)
 
-    return sorted(file_list, key=lambda x: x.count(os.path.sep), reverse=True)
+    return sort_path_list(file_list)
 
 
 def find_folders(folder, extension=None, depth=None):
@@ -64,7 +68,8 @@ def find_folders(folder, extension=None, depth=None):
                 folder_list.append(file)
             elif file.lower().endswith(extension.lower()):
                 folder_list.append(file)
-    return sorted(folder_list, key=lambda x: x.count(os.path.sep), reverse=True)
+
+    return sort_path_list(folder_list)
 
 
 def opened_files(path):
