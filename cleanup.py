@@ -25,7 +25,7 @@ rootLogger.addHandler(consoleHandler)
 
 # File logger
 fileHandler = RotatingFileHandler(
-    os.path.join(os.path.dirname(sys.argv[0]), 'activity.log'),
+    os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), 'activity.log'),
     maxBytes=1024 * 1024 * 5,
     backupCount=5,
     encoding='utf-8'
