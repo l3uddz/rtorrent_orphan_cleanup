@@ -104,6 +104,8 @@
 
 `download_folder` - Where all the completed downloads go.
 
+  - If this is a Docker ruTorrent container, this will be the location on the host.
+
 `url` - Your ruTorrent URL.
 
   - This can be in the form of `https://user:pass@ipaddress`
