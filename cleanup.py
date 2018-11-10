@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 import logging
 import os
 import sys
@@ -48,9 +49,12 @@ rtorrent = None
 # FUNCTIONS
 ############################################################
 
-def remove_path(file_path):
-    log.warning("Do you want to remove: %s (y/n)", file_path)
-    yn = input()
+def remove_path(file_path, auto_remove=False):
+    if not auto_remove:
+        log.warning("Do you want to remove: %s (y/n)", file_path)
+        yn = input()
+    else:
+        yn = 'y'
     if yn.lower() == 'y':
         # delete the path
         is_folder = os.path.isdir(file_path)
@@ -60,8 +64,11 @@ def remove_path(file_path):
                 folder_path = os.path.dirname(file_path)
                 left_over_files = path.find_files(folder_path)
                 if not len(left_over_files):
-                    log.warning("Do you want to remove the orphaned folder: %s (y/n)", folder_path)
-                    yn = input()
+                    if not auto_remove:
+                        log.warning("Do you want to remove the orphaned folder: %s (y/n)", folder_path)
+                        yn = input()
+                    else:
+                        yn = 'y'
                     if yn.lower() == 'y':
                         path.delete(folder_path)
 
@@ -129,13 +136,17 @@ if __name__ == "__main__":
              len(orphaned_paths))
 
     sorted_orphaned_paths = path.sort_path_list(orphaned_paths)
-    log.info(sorted_orphaned_paths)
+    log.info(json.dumps(sorted_orphaned_paths, indent=2))
 
     # delete paths
-    log.info("Do you want to delete the paths, one by one? (y/n)")
-    yn = input()
+    if not cfg.config['cleanup']['auto_remove']:
+        log.info("Do you want to delete the paths, one by one? (y/n)")
+        yn = input()
+    else:
+        yn = 'y'
+
     if yn.lower() == 'y':
         for orphaned_path in sorted_orphaned_paths:
-            remove_path(orphaned_path)
+            remove_path(orphaned_path, cfg.config['cleanup']['auto_remove'])
 
     log.info("Finished!")

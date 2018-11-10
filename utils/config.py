@@ -19,6 +19,10 @@ class Config:
             'url': '',
             'download_folder': '',
             'path_mappings': {}
+        },
+        # CLEANUP
+        'cleanup': {
+            'auto_remove': False
         }
     })
 
