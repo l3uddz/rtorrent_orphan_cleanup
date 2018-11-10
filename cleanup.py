@@ -86,7 +86,6 @@ def existing_folder(folder_path, torrent_files):
 
 if __name__ == "__main__":
     log.debug("Initialized")
-
     # build list of files in download path
     local_files = path.find_files(cfg.config['rutorrent']['download_folder'])
     if not len(local_files):
@@ -137,6 +136,11 @@ if __name__ == "__main__":
 
     sorted_orphaned_paths = path.sort_path_list(orphaned_paths)
     log.info(json.dumps(sorted_orphaned_paths, indent=2))
+
+    # show total size of orphans
+    if cfg.config['cleanup']['show_total_orphans_size']:
+        total_orphans_size = sum([os.path.getsize(f) for f in sorted_orphaned_paths if os.path.isfile(f)])
+        log.info("Total size of orphan files: %s", path.pretty_size(total_orphans_size))
 
     # delete paths
     if not cfg.config['cleanup']['auto_remove']:

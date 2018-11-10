@@ -1,5 +1,6 @@
 import hashlib
 import os
+from math import log as m_log
 from pathlib import Path
 
 from . import process
@@ -12,6 +13,12 @@ except ImportError:
 import logging
 
 log = logging.getLogger('path')
+
+
+def pretty_size(n, pow=0, b=1024, u='B', pre=[''] + [p + 'i' for p in 'KMGTPEZY']):
+    """ origin: https://stackoverflow.com/a/31178618 """
+    pow, n = min(int(m_log(max(n * b ** pow, 1), b)), len(pre) - 1), n * b ** pow
+    return "%%.%if %%s%%s" % abs(pow % (-pow - 1)) % (n / b ** float(pow), pre[pow], u)
 
 
 def get_file_extension(file):

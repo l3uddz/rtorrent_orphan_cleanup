@@ -22,7 +22,8 @@ class Config:
         },
         # CLEANUP
         'cleanup': {
-            'auto_remove': False
+            'auto_remove': False,
+            'show_total_orphans_size': True
         }
     })
 
