@@ -12,7 +12,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-	- [config.json](#sample-configjson)
+	- [config.json](#configjson)
 	- [core](#core)
 	- [rutorrent](#rutorrent)
 - [Usage](#usage)
