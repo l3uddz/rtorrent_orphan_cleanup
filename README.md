@@ -14,6 +14,7 @@
 - [Configuration](#configuration)
 	- [config.json](#configjson)
 	- [core](#core)
+	- [cleanup](#cleanup)
 	- [rutorrent](#rutorrent)
 - [Usage](#usage)
 
@@ -61,6 +62,10 @@
   "core": {
     "debug": true
   },
+  "cleanup": {
+    "auto_remove": false,
+    "show_total_orphans_size": true
+  },
   "rutorrent": {
     "download_folder": "/mnt/local/downloads/torrents/rutorrent/completed",
     "url": "https://user:pass@rutorrent.domain.com",
@@ -86,6 +91,23 @@
 
   - Set to `true`, if you are having issues and want to diagnose why.
 
+## cleanup
+
+```json
+"cleanup": {
+  "auto_remove": false
+},
+```
+
+`auto_remove` - To automatically delete orphan files.
+
+  - If `false`, you will get a list of orphan files and you will be prompted to either delete them one-by-one or exit.
+
+  - If `true`, you will get a list of orphan files and it will delete them all.
+
+  - Default is `false`.
+
+`show_total_orphans_size` - show total size of all orphan files. Default is `true`.
 
 ## rutorrent
 
@@ -168,14 +190,6 @@ Command:
 ```
 python3 cleanup.py
 ```
-
-After finding and listing all the orphan downloads, you will be prompted with:
-
-```
-Do you want to delete the files, one by one? (y/n)
-```
-
-Chose `y` to have them deleted automatically or `n` to go through them one by one.
 
 ***
 
