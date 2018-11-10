@@ -23,7 +23,7 @@ class Config:
     })
 
     def __init__(self, log: logging.getLoggerClass(),
-                 config_path: str = os.path.join(os.path.dirname(sys.argv[0]), 'config.json')):
+                 config_path: str = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), 'config.json')):
         self.log = log
         self.config_path = config_path
         self.config = OrderedDict({})
