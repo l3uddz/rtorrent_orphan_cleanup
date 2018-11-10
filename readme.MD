@@ -156,7 +156,7 @@ Example:
     "/downloads/torrents/"
   ]
 }
-
+```
 
 
 # Usage
