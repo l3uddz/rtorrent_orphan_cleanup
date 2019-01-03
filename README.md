@@ -1,4 +1,4 @@
-# rutorrent orphan cleanup
+# rtorrent orphan cleanup
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue.svg)](https://www.python.org/)
 [![License: GPL 3](https://img.shields.io/badge/License-GPL%203-blue.svg)](https://github.com/l3uddz/rutorrent_orphan_cleanup/blob/master/LICENSE.md)
@@ -41,11 +41,11 @@
 
 1. `cd /opt`
 
-1. `sudo git clone https://github.com/l3uddz/rutorrent_orphan_cleanup`
+1. `sudo git clone https://github.com/l3uddz/rtorrent_orphan_cleanup`
 
-1. `sudo chown -R user:group rutorrent_orphan_cleanup` (run `id` to find your user / group)
+1. `sudo chown -R user:group rtorrent_orphan_cleanup` (run `id` to find your user / group)
 
-1. `cd rutorrent_orphan_cleanup`
+1. `cd rtorrent_orphan_cleanup`
 
 1. `python3 cleanup.py` - run once to generate a default `config.json` file.
 
