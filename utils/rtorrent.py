@@ -33,9 +33,10 @@ class Rtorrent:
 
                 for t in torrent_list_raw:
                     # Get files if multifile torrent
-                    files = None
+                    files = []
+                    files_data = None
                     if t[2]:
-                        files = proxy.f.multicall(
+                        files_data = proxy.f.multicall(
                             # Hash
                             t[0],
                             # Pattern
@@ -44,7 +45,7 @@ class Rtorrent:
                             "f.path="
                         )
                         # Flatten list
-                        files = [os.path.join(t[7], f) for subf in files for f in subf]
+                        files = [os.path.join(t[7], f.lstrip(os.path.sep)) for subf in files_data for f in subf]
                     else:
                         files = [os.path.join(t[7], t[1])]
 
