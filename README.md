@@ -1,4 +1,4 @@
-# rutorrent orphan cleanup
+# rtorrent orphan cleanup
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue.svg)](https://www.python.org/)
 [![License: GPL 3](https://img.shields.io/badge/License-GPL%203-blue.svg)](https://github.com/l3uddz/rutorrent_orphan_cleanup/blob/master/LICENSE.md)
@@ -14,6 +14,7 @@
 - [Configuration](#configuration)
 	- [config.json](#configjson)
 	- [core](#core)
+	- [cleanup](#cleanup)
 	- [rutorrent](#rutorrent)
 - [Usage](#usage)
 
@@ -40,11 +41,11 @@
 
 1. `cd /opt`
 
-1. `sudo git clone https://github.com/l3uddz/rutorrent_orphan_cleanup`
+1. `sudo git clone https://github.com/l3uddz/rtorrent_orphan_cleanup`
 
-1. `sudo chown -R user:group rutorrent_orphan_cleanup` (run `id` to find your user / group)
+1. `sudo chown -R user:group rtorrent_orphan_cleanup` (run `id` to find your user / group)
 
-1. `cd rutorrent_orphan_cleanup`
+1. `cd rtorrent_orphan_cleanup`
 
 1. `python3 cleanup.py` - run once to generate a default `config.json` file.
 
@@ -60,6 +61,10 @@
 {
   "core": {
     "debug": true
+  },
+  "cleanup": {
+    "auto_remove": false,
+    "show_total_orphans_size": true
   },
   "rutorrent": {
     "download_folder": "/mnt/local/downloads/torrents/rutorrent/completed",
@@ -86,6 +91,23 @@
 
   - Set to `true`, if you are having issues and want to diagnose why.
 
+## cleanup
+
+```json
+"cleanup": {
+  "auto_remove": false
+},
+```
+
+`auto_remove` - To automatically delete orphan files.
+
+  - If `false`, you will get a list of orphan files and you will be prompted to either delete them one-by-one or exit.
+
+  - If `true`, you will get a list of orphan files and it will delete them all.
+
+  - Default is `false`.
+
+`show_total_orphans_size` - show total size of all orphan files. Default is `true`.
 
 ## rutorrent
 
@@ -168,14 +190,6 @@ Command:
 ```
 python3 cleanup.py
 ```
-
-After finding and listing all the orphan downloads, you will be prompted with:
-
-```
-Do you want to delete the files, one by one? (y/n)
-```
-
-Chose `y` to have them deleted automatically or `n` to go through them one by one.
 
 ***
 
